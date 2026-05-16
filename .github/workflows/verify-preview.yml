@@ -1,0 +1,69 @@
+name: Verify Preview Deployment
+
+on:
+  deployment_status:
+
+jobs:
+  verify-preview:
+    if: github.event.deployment_status.state == 'success' && github.event.deployment_status.environment != 'Production'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verify bypass via header
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
+          echo "Testing preview deployment: $PREVIEW_URL"
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+            "$PREVIEW_URL")
+
+          if [ "$STATUS" -ne 200 ]; then
+            echo "FAIL: Header bypass returned HTTP $STATUS (expected 200)"
+            exit 1
+          fi
+          echo "PASS: Header bypass returned HTTP 200"
+
+      - name: Verify bypass via query parameter
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${PREVIEW_URL}?x-vercel-protection-bypass=$VERCEL_AUTOMATION_BYPASS_SECRET")
+
+          if [ "$STATUS" -ne 200 ]; then
+            echo "FAIL: Query parameter bypass returned HTTP $STATUS (expected 200)"
+            exit 1
+          fi
+          echo "PASS: Query parameter bypass returned HTTP 200"
+
+      - name: Verify content
+        env:
+          VERCEL_AUTOMATION_BYPASS_SECRET: ${{ secrets.VERCEL_AUTOMATION_BYPASS_SECRET }}
+        run: |
+          PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
+
+          BODY=$(curl -s \
+            -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
+            "$PREVIEW_URL")
+
+          if ! echo "$BODY" | grep -q "Hello, world!"; then
+            echo "FAIL: Response body does not contain 'Hello, world!'"
+            exit 1
+          fi
+          echo "PASS: Response body contains 'Hello, world!'"
+
+      - name: Verify protection still active without secret
+        run: |
+          PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
+
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PREVIEW_URL")
+
+          if [ "$STATUS" -eq 200 ]; then
+            echo "FAIL: Deployment is not protected (returned 200 without bypass secret)"
+            exit 1
+          fi
+          echo "PASS: Deployment is protected (returned HTTP $STATUS without bypass secret)"
