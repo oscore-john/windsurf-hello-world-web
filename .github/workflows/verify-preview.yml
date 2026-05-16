@@ -50,11 +50,11 @@ jobs:
             -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
             "$PREVIEW_URL")
 
-          if ! echo "$BODY" | grep -q "Hello, world!"; then
-            echo "FAIL: Response body does not contain 'Hello, world!'"
+          if ! echo "$BODY" | grep -q "works.js"; then
+            echo "FAIL: Response body does not contain 'works.js'"
             exit 1
           fi
-          echo "PASS: Response body contains 'Hello, world!'"
+          echo "PASS: Response body contains 'works.js'"
 
       - name: Verify protection still active without secret
         run: |
