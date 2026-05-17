@@ -31,6 +31,7 @@ var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
   function showAuth() {
     authScreen.style.display = "";
     gameScreen.style.display = "none";
+    currentUser = null;
     Game.stop();
   }
 
@@ -39,6 +40,10 @@ var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
     authScreen.style.display = "none";
     gameScreen.style.display = "";
     displayEmail.textContent = user.email;
+    displayScore.textContent = "0";
+    displayBest.textContent = "0";
+    bestScore = 0;
+    Game.stop();
     loadScore(user.id);
   }
 
