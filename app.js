@@ -43,6 +43,7 @@ var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
     displayScore.textContent = "0";
     displayBest.textContent = "0";
     bestScore = 0;
+    document.getElementById("target-btn").textContent = "0";
     Game.stop();
     loadScore(user.id);
   }
