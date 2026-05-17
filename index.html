@@ -5,11 +5,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Click the Button!</title>
     <link rel="stylesheet" href="./style.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
   </head>
   <body>
-    <main class="game-area" id="game-area">
-      <button class="target-btn" id="target-btn">0</button>
-    </main>
+
+    <!-- Auth Screen -->
+    <div class="auth-screen" id="auth-screen">
+      <div class="auth-card">
+        <h1 class="auth-title">Click the Button!</h1>
+        <p class="auth-subtitle">Sign in to save your high score</p>
+
+        <form id="signin-form" class="auth-form">
+          <input type="email" id="signin-email" placeholder="Email" required autocomplete="email" />
+          <input type="password" id="signin-password" placeholder="Password" required autocomplete="current-password" />
+          <button type="submit" class="auth-btn">Sign In</button>
+          <p class="auth-toggle">No account? <a href="#" id="show-signup">Sign up</a></p>
+        </form>
+
+        <form id="signup-form" class="auth-form" style="display:none">
+          <input type="email" id="signup-email" placeholder="Email" required autocomplete="email" />
+          <input type="password" id="signup-password" placeholder="Password (min 6 chars)" required minlength="6" autocomplete="new-password" />
+          <button type="submit" class="auth-btn">Sign Up</button>
+          <p class="auth-toggle">Have an account? <a href="#" id="show-signin">Sign in</a></p>
+        </form>
+
+        <p id="auth-error" class="auth-error"></p>
+      </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="game-screen" style="display:none">
+      <header class="game-header" id="game-header">
+        <div class="header-scores">
+          <span class="header-stat">Score: <strong id="display-score">0</strong></span>
+          <span class="header-stat">Best: <strong id="display-best">0</strong></span>
+        </div>
+        <div class="header-user">
+          <span id="display-email"></span>
+          <button id="sign-out-btn" class="sign-out-btn">Sign out</button>
+        </div>
+      </header>
+      <main class="game-area" id="game-area">
+        <button class="target-btn" id="target-btn">0</button>
+      </main>
+    </div>
+
     <script src="./game.js"></script>
+    <script src="./app.js"></script>
   </body>
 </html>

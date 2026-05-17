@@ -1,9 +1,10 @@
-(function () {
+var Game = (function () {
   var score = 0;
   var btn = document.getElementById("target-btn");
   var area = document.getElementById("game-area");
   var moveInterval = null;
   var MOVE_DELAY_MS = 1000;
+  var onScoreChange = null;
 
   function getRandomPosition() {
     var btnSize = 80;
@@ -25,8 +26,28 @@
     score++;
     btn.textContent = score;
     moveButton();
+    if (onScoreChange) {
+      onScoreChange(score);
+    }
   });
 
-  moveButton();
-  moveInterval = setInterval(moveButton, MOVE_DELAY_MS);
+  return {
+    start: function (initialScore, callback) {
+      score = initialScore || 0;
+      btn.textContent = score;
+      onScoreChange = callback || null;
+      moveButton();
+      if (moveInterval) clearInterval(moveInterval);
+      moveInterval = setInterval(moveButton, MOVE_DELAY_MS);
+    },
+    stop: function () {
+      if (moveInterval) {
+        clearInterval(moveInterval);
+        moveInterval = null;
+      }
+    },
+    getScore: function () {
+      return score;
+    }
+  };
 })();

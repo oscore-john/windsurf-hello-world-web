@@ -56,6 +56,12 @@ jobs:
           fi
           echo "PASS: Response body contains 'game.js'"
 
+          if ! echo "$BODY" | grep -q "app.js"; then
+            echo "FAIL: Response body does not contain 'app.js'"
+            exit 1
+          fi
+          echo "PASS: Response body contains 'app.js'"
+
       - name: Verify protection still active without secret
         run: |
           PREVIEW_URL="${{ github.event.deployment_status.target_url }}"
