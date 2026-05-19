@@ -86,7 +86,10 @@ When('the user deletes their account', async ({ page }) => {
 });
 
 When('a new account is created with the same email', async ({ page }) => {
-  await page.locator('#show-signup').click();
+  // Switch to sign-up form if needed
+  if (await page.locator('#signup-form').isHidden()) {
+    await page.locator('#show-signup').click();
+  }
   await page.locator('#signup-email').fill(deletedEmail);
   await page.locator('#signup-password').fill(deletedPassword);
   await page.locator('#signup-form .auth-btn').click();
