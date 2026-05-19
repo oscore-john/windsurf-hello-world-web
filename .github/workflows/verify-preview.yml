@@ -50,17 +50,17 @@ jobs:
             -H "x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET" \
             "$PREVIEW_URL")
 
-          if ! echo "$BODY" | grep -q "game.js"; then
-            echo "FAIL: Response body does not contain 'game.js'"
+          if ! echo "$BODY" | grep -q "_next"; then
+            echo "FAIL: Response body does not contain '_next' (Next.js marker)"
             exit 1
           fi
-          echo "PASS: Response body contains 'game.js'"
+          echo "PASS: Response body contains '_next'"
 
-          if ! echo "$BODY" | grep -q "app.js"; then
-            echo "FAIL: Response body does not contain 'app.js'"
+          if ! echo "$BODY" | grep -q "Click the Button"; then
+            echo "FAIL: Response body does not contain 'Click the Button'"
             exit 1
           fi
-          echo "PASS: Response body contains 'app.js'"
+          echo "PASS: Response body contains 'Click the Button'"
 
       - name: Verify protection still active without secret
         run: |
