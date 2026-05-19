@@ -2,7 +2,7 @@ import { expect } from '@playwright/test';
 import { createBdd } from 'playwright-bdd';
 import { test } from './fixtures';
 
-const { When, Then } = createBdd(test);
+const { Given, When, Then } = createBdd(test);
 
 async function waitForGameReady(page: import('@playwright/test').Page) {
   // Wait for the outer ring to be positioned (indicates Game.start has run)
@@ -26,6 +26,20 @@ When('the user clicks the outer ring {int} times', async ({ page }, times: numbe
 
 Then('the best score display shows {int}', async ({ page }, expected: number) => {
   await expect(page.locator('#display-best')).toHaveText(String(expected));
+});
+
+When('the user clicks the target button', async ({ page }) => {
+  await page.locator('.target-btn').first().click();
+});
+
+Given('the user clicks the target button {int} times', async ({ page }, times: number) => {
+  for (let i = 0; i < times; i++) {
+    await page.locator('.target-btn').first().click();
+  }
+});
+
+Then('the target button label shows {int}', async ({ page }, expected: number) => {
+  await expect(page.locator('.target-btn').first()).toHaveText(String(expected));
 });
 
 Then('the outer ring has moved with the target button', async ({ page }) => {
