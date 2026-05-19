@@ -12,6 +12,7 @@ var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
   var showSignin = document.getElementById("show-signin");
   var authError = document.getElementById("auth-error");
   var signOutBtn = document.getElementById("sign-out-btn");
+  var deleteAccountBtn = document.getElementById("delete-account-btn");
   var displayEmail = document.getElementById("display-email");
   var displayScore = document.getElementById("display-score");
   var displayBest = document.getElementById("display-best");
@@ -160,6 +161,47 @@ var SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYm
     saveScore(Game.getScore(), bestScore);
     supabase.auth.signOut().then(function () {
       showAuth();
+    });
+  });
+
+  // Delete account
+  deleteAccountBtn.addEventListener("click", function () {
+    if (!confirm("Are you sure you want to delete your account? This action cannot be undone.")) {
+      return;
+    }
+    deleteAccountBtn.disabled = true;
+    supabase.auth.getSession().then(function (result) {
+      var session = result.data.session;
+      if (!session) {
+        showError("You must be signed in to delete your account.");
+        deleteAccountBtn.disabled = false;
+        return;
+      }
+      fetch(SUPABASE_URL + "/functions/v1/delete-account", {
+        method: "POST",
+        headers: {
+          "Authorization": "Bearer " + session.access_token,
+          "Content-Type": "application/json"
+        }
+      })
+        .then(function (resp) {
+          if (!resp.ok) {
+            return resp.json().then(function (body) {
+              throw new Error(body.error || "Failed to delete account");
+            });
+          }
+          return resp.json();
+        })
+        .then(function () {
+          if (saveTimeout) clearTimeout(saveTimeout);
+          supabase.auth.signOut().then(function () {
+            showAuth();
+          });
+        })
+        .catch(function (err) {
+          alert("Account deletion failed: " + err.message);
+          deleteAccountBtn.disabled = false;
+        });
     });
   });
 

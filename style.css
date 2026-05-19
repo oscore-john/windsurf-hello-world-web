@@ -166,6 +166,26 @@ body {
   background: rgba(255, 255, 255, 0.08);
 }
 
+.delete-account-btn {
+  padding: 0.3rem 0.7rem;
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  border-radius: 0.4rem;
+  background: transparent;
+  color: #f87171;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-account-btn:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+.delete-account-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 /* ---------- Game area ---------- */
 
 .game-area {
