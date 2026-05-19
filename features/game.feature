@@ -1,20 +1,33 @@
-Feature: Click-the-Button Game
+Feature: Multiple Target Buttons
 
-  After signing in, users play a game where they click a moving button
-  to increment their score.
+  The game displays multiple target buttons simultaneously.
+  Clicking any button increments the shared score.
 
-  Scenario: Score increments on button click
+  Scenario: Multiple buttons are visible on game start
+    Given the user is signed in and on the game screen
+    Then 3 target buttons are visible in the game area
+
+  Scenario: Clicking any target button increments the score
     Given the user is signed in and on the game screen
     And the current score is 0
-    When the user clicks the target button
+    When the user clicks any target button
     Then the score display shows 1
 
-  Scenario: Button moves to a new position periodically
+  Scenario: Each button click contributes to the total score
+    Given the user is signed in and on the game screen
+    And the current score is 0
+    When the user clicks target button 1
+    And the user clicks target button 2
+    And the user clicks target button 3
+    Then the score display shows 3
+
+  Scenario: Buttons move independently over time
     Given the user is signed in and on the game screen
     When 2 seconds elapse
-    Then the target button has moved from its initial position
+    Then at least one target button has moved from its initial position
 
-  Scenario: Score is displayed on the target button
+  Scenario: Best score updates when current score exceeds it
     Given the user is signed in and on the game screen
-    When the user clicks the target button 3 times
-    Then the target button label shows 3
+    And the current score is 0
+    When the user clicks any target button
+    Then the best score display shows 1

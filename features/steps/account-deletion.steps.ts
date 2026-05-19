@@ -62,8 +62,8 @@ Given('the user is signed in and has a saved score', async ({ page, signedInUser
   deletedEmail = signedInUser.email;
   deletedPassword = signedInUser.password;
 
-  // Click the target button to score a point
-  await page.locator('#target-btn').click();
+  // Click a target button to score a point
+  await page.locator('.target-btn').first().click();
 
   // Wait for the debounced save to fire
   await page.waitForResponse(

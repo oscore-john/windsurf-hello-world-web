@@ -13,7 +13,7 @@ Given(
     savedEmail = signedInUser.email;
     savedPassword = signedInUser.password;
     for (let i = 0; i < points; i++) {
-      await page.locator('#target-btn').click();
+      await page.locator('.target-btn').first().click();
     }
     // Wait for the debounced save (2 s) to fire and the Supabase upsert to return
     await page.waitForResponse(
