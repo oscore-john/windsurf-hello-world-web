@@ -83,16 +83,24 @@ function moveButton(index: number): void {
   applyRandomColour(btn, ring);
 }
 
+function updateButtonLabels(): void {
+  for (let i = 0; i < buttons.length; i++) {
+    buttons[i].textContent = String(score);
+  }
+}
+
 function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
   const ring = document.createElement('div');
   ring.className = 'outer-ring';
 
   const btn = document.createElement('button');
   btn.className = 'target-btn';
+  btn.textContent = String(score);
 
   btn.addEventListener('click', function (e) {
     e.stopPropagation();
     score++;
+    updateButtonLabels();
     moveButton(buttons.indexOf(btn));
     if (onScoreChange) {
       onScoreChange(score);
@@ -101,6 +109,7 @@ function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
 
   ring.addEventListener('click', function () {
     score--;
+    updateButtonLabels();
     moveButton(rings.indexOf(ring));
     if (onScoreChange) {
       onScoreChange(score);
