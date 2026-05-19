@@ -3,10 +3,17 @@ var Game = (function () {
   var MOVE_DELAY_MS = 1000;
   var TOTAL_SIZE = 160;
 
+  var SIZE_TIERS = [
+    { size: 80, points: 1, fontSize: "1.5rem" },
+    { size: 52, points: 2, fontSize: "1rem" },
+    { size: 32, points: 5, fontSize: "0.75rem" }
+  ];
+
   var score = 0;
   var area = document.getElementById("game-area");
   var buttons = [];
   var rings = [];
+  var buttonTiers = [];
   var moveIntervals = [];
   var onScoreChange = null;
 
@@ -19,6 +26,16 @@ var Game = (function () {
     { r: 219, g: 39, b: 119 },
     { r: 249, g: 115, b: 22 }
   ];
+
+  function selectRandomTier() {
+    return SIZE_TIERS[Math.floor(Math.random() * SIZE_TIERS.length)];
+  }
+
+  function applySize(btn, tier) {
+    btn.style.width = tier.size + "px";
+    btn.style.height = tier.size + "px";
+    btn.style.fontSize = tier.fontSize;
+  }
 
   function getRandomPosition(existingPositions) {
     var maxX = area.clientWidth - TOTAL_SIZE;
@@ -75,10 +92,14 @@ var Game = (function () {
   function moveButton(index) {
     var ring = rings[index];
     var btn = buttons[index];
+    var tier = selectRandomTier();
+    buttonTiers[index] = tier;
+    applySize(btn, tier);
     var existing = getCurrentPositions(index);
     var pos = getRandomPosition(existing);
     ring.style.left = pos.x + "px";
     ring.style.top = pos.y + "px";
+    btn.textContent = "+" + tier.points;
     applyRandomColour(btn, ring);
   }
 
@@ -91,8 +112,9 @@ var Game = (function () {
 
     btn.addEventListener("click", function (e) {
       e.stopPropagation();
-      score++;
-      moveButton(buttons.indexOf(btn));
+      var idx = buttons.indexOf(btn);
+      score += buttonTiers[idx].points;
+      moveButton(idx);
       if (onScoreChange) {
         onScoreChange(score);
       }
@@ -119,6 +141,7 @@ var Game = (function () {
     }
     buttons = [];
     rings = [];
+    buttonTiers = [];
   }
 
   function clearAllIntervals() {
@@ -140,6 +163,7 @@ var Game = (function () {
         var pair = createButton();
         buttons.push(pair.btn);
         rings.push(pair.ring);
+        buttonTiers.push(SIZE_TIERS[0]);
       }
 
       for (var j = 0; j < buttons.length; j++) {
