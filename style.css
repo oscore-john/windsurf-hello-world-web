@@ -76,7 +76,7 @@ body {
   padding: 0.7rem;
   border: none;
   border-radius: 0.5rem;
-  background: rgba(8, 145, 178, 0.7);
+  background: rgba(126, 34, 206, 0.7);
   color: #f8fafc;
   font-size: 1rem;
   font-weight: 600;
@@ -85,7 +85,7 @@ body {
 }
 
 .auth-btn:hover {
-  background: rgba(8, 145, 178, 0.9);
+  background: rgba(126, 34, 206, 0.9);
 }
 
 .auth-btn:disabled {
@@ -153,17 +153,17 @@ body {
 
 .sign-out-btn {
   padding: 0.3rem 0.7rem;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(192, 132, 252, 0.3);
   border-radius: 0.4rem;
   background: transparent;
-  color: #94a3b8;
+  color: #c4b5fd;
   font-size: 0.8rem;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .sign-out-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(126, 34, 206, 0.2);
 }
 
 /* ---------- Game area ---------- */
