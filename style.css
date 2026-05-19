@@ -194,8 +194,31 @@ body {
   height: 100vh;
 }
 
-.target-btn {
+.outer-ring {
   position: absolute;
+  width: 10rem;
+  height: 10rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(239, 68, 68, 0.18);
+  border: 2px solid rgba(239, 68, 68, 0.4);
+  cursor: pointer;
+  transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 1.5rem rgba(239, 68, 68, 0.25);
+  user-select: none;
+}
+
+.outer-ring:hover {
+  background: rgba(239, 68, 68, 0.28);
+}
+
+.outer-ring:active {
+  background: rgba(239, 68, 68, 0.35);
+}
+
+.target-btn {
   width: 5rem;
   height: 5rem;
   border: 2px solid rgba(103, 232, 249, 0.6);
