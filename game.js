@@ -1,15 +1,16 @@
 var Game = (function () {
   var score = 0;
   var btn = document.getElementById("target-btn");
+  var ring = document.getElementById("outer-ring");
   var area = document.getElementById("game-area");
   var moveInterval = null;
   var MOVE_DELAY_MS = 1000;
+  var TOTAL_SIZE = 160;
   var onScoreChange = null;
 
   function getRandomPosition() {
-    var btnSize = 80;
-    var maxX = area.clientWidth - btnSize;
-    var maxY = area.clientHeight - btnSize;
+    var maxX = area.clientWidth - TOTAL_SIZE;
+    var maxY = area.clientHeight - TOTAL_SIZE;
     return {
       x: Math.max(0, Math.floor(Math.random() * maxX)),
       y: Math.max(0, Math.floor(Math.random() * maxY))
@@ -31,17 +32,30 @@ var Game = (function () {
     btn.style.borderColor = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.6)";
     btn.style.background = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.45)";
     btn.style.boxShadow = "0 0 1.5rem rgba(" + c.r + "," + c.g + "," + c.b + ",0.4)";
+    ring.style.borderColor = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.3)";
+    ring.style.background = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.12)";
+    ring.style.boxShadow = "0 0 1.5rem rgba(" + c.r + "," + c.g + "," + c.b + ",0.2)";
   }
 
   function moveButton() {
     var pos = getRandomPosition();
-    btn.style.left = pos.x + "px";
-    btn.style.top = pos.y + "px";
+    ring.style.left = pos.x + "px";
+    ring.style.top = pos.y + "px";
     applyRandomColour();
   }
 
-  btn.addEventListener("click", function () {
+  btn.addEventListener("click", function (e) {
+    e.stopPropagation();
     score++;
+    btn.textContent = score;
+    moveButton();
+    if (onScoreChange) {
+      onScoreChange(score);
+    }
+  });
+
+  ring.addEventListener("click", function () {
+    score--;
     btn.textContent = score;
     moveButton();
     if (onScoreChange) {
