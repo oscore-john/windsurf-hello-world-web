@@ -1,6 +1,44 @@
 # windsurf-hello-world-web
 
-A static landing page deployed on [Vercel](https://vercel.com), used for verifying web deployments.
+A click-the-button game with Supabase auth, built with [Next.js](https://nextjs.org) App Router and deployed on [Vercel](https://vercel.com).
+
+## Getting Started
+
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Environment Variables
+
+Copy `.env.local.example` to `.env.local` and fill in your Supabase credentials:
+
+```bash
+cp .env.local.example .env.local
+```
+
+Required variables:
+- `NEXT_PUBLIC_SUPABASE_URL` — Your Supabase project URL
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY` — Your Supabase anon/public key
+
+### Install dependencies
+
+```bash
+npm install
+```
+
+### Run development server
+
+```bash
+npm run dev
+```
+
+### Build for production
+
+```bash
+npm run build
+npm start
+```
 
 ## Deployment Protection
 
@@ -42,19 +80,14 @@ The `.github/workflows/verify-preview.yml` workflow runs automatically on each p
 
 1. Header-based bypass returns 200
 2. Query-parameter bypass returns 200
-3. Response body contains expected content
+3. Response body contains expected content (Next.js markers)
 4. Requests without the secret are still blocked
 
 ## BDD Tests & Living Documentation
 
 The project uses [playwright-bdd](https://github.com/vitalets/playwright-bdd) to maintain executable Gherkin specifications that double as living documentation. Feature files live in `/features/` and describe the application's core behaviours (authentication, game mechanics, score persistence).
 
-### Prerequisites
-
-- Node.js 20+
-- npm
-
-### Install dependencies
+### Install test dependencies
 
 ```bash
 npm install
@@ -71,10 +104,10 @@ VERCEL_AUTOMATION_BYPASS_SECRET=<secret> \
 npm test
 ```
 
-Against a local server:
+Against a local dev server:
 
 ```bash
-npx serve . &          # serve the static site on localhost:3000
+npm run dev &
 BASE_URL=http://localhost:3000 npm test
 ```
 

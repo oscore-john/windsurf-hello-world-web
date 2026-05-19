@@ -4,6 +4,10 @@ dist/
 build/
 .vercel/
 
+# Next.js
+.next/
+out/
+
 # Supabase
 .branches
 .temp
@@ -13,3 +17,6 @@ test-results/
 cucumber-report/
 .features-gen/
 playwright-report/
+
+# Environment
+.env*.local

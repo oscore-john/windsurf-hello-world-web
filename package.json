@@ -1,15 +1,30 @@
 {
   "name": "windsurf-hello-world-web",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "private": true,
-  "description": "Click-the-button game with Supabase auth — includes BDD living documentation",
+  "description": "Click-the-button game with Supabase auth — Next.js App Router",
   "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
     "test": "npx bddgen && npx playwright test",
     "test:headed": "npx bddgen && npx playwright test --headed",
     "report": "npx playwright show-report cucumber-report"
   },
+  "dependencies": {
+    "@supabase/ssr": "^0.6.1",
+    "@supabase/supabase-js": "^2.49.4",
+    "next": "^15.3.2",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
   "devDependencies": {
     "@playwright/test": "^1.52.0",
-    "playwright-bdd": "^8.5.0"
+    "@types/node": "^22.15.17",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
+    "playwright-bdd": "^8.5.0",
+    "typescript": "^5.8.3"
   }
 }

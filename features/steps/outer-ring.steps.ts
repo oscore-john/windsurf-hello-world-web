@@ -8,6 +8,19 @@ async function waitForGameReady(page: import('@playwright/test').Page) {
   await page.locator('.outer-ring[style*="left"]').first().waitFor({ state: 'attached', timeout: 10_000 });
 }
 
+When('the user clicks the target button', async ({ page }) => {
+  await waitForGameReady(page);
+  await page.locator('.target-btn').first().click();
+});
+
+Given('the user clicks the target button {int} times', async ({ page }, times: number) => {
+  await waitForGameReady(page);
+  const btn = page.locator('.target-btn').first();
+  for (let i = 0; i < times; i++) {
+    await btn.click();
+  }
+});
+
 When('the user clicks the outer ring', async ({ page }) => {
   await waitForGameReady(page);
   const ring = page.locator('.outer-ring').first();
@@ -20,26 +33,6 @@ When('the user clicks the outer ring {int} times', async ({ page }, times: numbe
   for (let i = 0; i < times; i++) {
     await ring.click({ position: { x: 10, y: 80 } });
   }
-});
-
-Then('the best score display shows {int}', async ({ page }, expected: number) => {
-  await expect(page.locator('#display-best')).toHaveText(String(expected));
-});
-
-When('the user clicks the target button', async ({ page }) => {
-  await page.locator('.target-btn').first().click();
-});
-
-Given('the user clicks the target button {int} times', async ({ page }, times: number) => {
-  for (let i = 0; i < times; i++) {
-    await page.locator('.target-btn').first().click();
-  }
-});
-
-Then('the target button label shows the current score', async ({ page }) => {
-  const scoreText = await page.locator('#display-score').textContent();
-  const score = Number(scoreText);
-  expect(score).toBeLessThan(0);
 });
 
 Then('the outer ring has moved with the target button', async ({ page }) => {
