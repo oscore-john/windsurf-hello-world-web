@@ -178,23 +178,23 @@ body {
   position: absolute;
   width: 5rem;
   height: 5rem;
-  border: 2px solid rgba(103, 232, 249, 0.6);
+  border: 2px solid rgba(192, 132, 252, 0.6);
   border-radius: 50%;
-  background: rgba(8, 145, 178, 0.45);
-  color: #a5f3fc;
+  background: rgba(126, 34, 206, 0.45);
+  color: #e9d5ff;
   font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
   transition: transform 0.1s ease;
   backdrop-filter: blur(8px);
-  box-shadow: 0 0 1.5rem rgba(56, 189, 248, 0.4);
+  box-shadow: 0 0 1.5rem rgba(168, 85, 247, 0.4);
   user-select: none;
 }
 
 .target-btn:hover {
   transform: scale(1.1);
-  background: rgba(8, 145, 178, 0.65);
-  box-shadow: 0 0 2.5rem rgba(56, 189, 248, 0.6);
+  background: rgba(126, 34, 206, 0.65);
+  box-shadow: 0 0 2.5rem rgba(168, 85, 247, 0.6);
 }
 
 .target-btn:active {
