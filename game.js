@@ -16,10 +16,28 @@ var Game = (function () {
     };
   }
 
+  var COLORS = [
+    { r: 8, g: 145, b: 178 },
+    { r: 126, g: 34, b: 206 },
+    { r: 220, g: 38, b: 38 },
+    { r: 234, g: 179, b: 8 },
+    { r: 22, g: 163, b: 74 },
+    { r: 219, g: 39, b: 119 },
+    { r: 249, g: 115, b: 22 }
+  ];
+
+  function applyRandomColour() {
+    var c = COLORS[Math.floor(Math.random() * COLORS.length)];
+    btn.style.borderColor = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.6)";
+    btn.style.background = "rgba(" + c.r + "," + c.g + "," + c.b + ",0.45)";
+    btn.style.boxShadow = "0 0 1.5rem rgba(" + c.r + "," + c.g + "," + c.b + ",0.4)";
+  }
+
   function moveButton() {
     var pos = getRandomPosition();
     btn.style.left = pos.x + "px";
     btn.style.top = pos.y + "px";
+    applyRandomColour();
   }
 
   btn.addEventListener("click", function () {

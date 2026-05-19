@@ -76,7 +76,7 @@ body {
   padding: 0.7rem;
   border: none;
   border-radius: 0.5rem;
-  background: rgba(126, 34, 206, 0.7);
+  background: rgba(8, 145, 178, 0.7);
   color: #f8fafc;
   font-size: 1rem;
   font-weight: 600;
@@ -85,7 +85,7 @@ body {
 }
 
 .auth-btn:hover {
-  background: rgba(126, 34, 206, 0.9);
+  background: rgba(8, 145, 178, 0.9);
 }
 
 .auth-btn:disabled {
@@ -153,17 +153,17 @@ body {
 
 .sign-out-btn {
   padding: 0.3rem 0.7rem;
-  border: 1px solid rgba(192, 132, 252, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: 0.4rem;
   background: transparent;
-  color: #c4b5fd;
+  color: #94a3b8;
   font-size: 0.8rem;
   cursor: pointer;
   transition: background 0.2s;
 }
 
 .sign-out-btn:hover {
-  background: rgba(126, 34, 206, 0.2);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 /* ---------- Game area ---------- */
@@ -178,23 +178,21 @@ body {
   position: absolute;
   width: 5rem;
   height: 5rem;
-  border: 2px solid rgba(192, 132, 252, 0.6);
+  border: 2px solid rgba(103, 232, 249, 0.6);
   border-radius: 50%;
-  background: rgba(126, 34, 206, 0.45);
-  color: #e9d5ff;
+  background: rgba(8, 145, 178, 0.45);
+  color: #a5f3fc;
   font-size: 1.5rem;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition: transform 0.1s ease, background 0.3s, border-color 0.3s, box-shadow 0.3s;
   backdrop-filter: blur(8px);
-  box-shadow: 0 0 1.5rem rgba(168, 85, 247, 0.4);
+  box-shadow: 0 0 1.5rem rgba(56, 189, 248, 0.4);
   user-select: none;
 }
 
 .target-btn:hover {
   transform: scale(1.1);
-  background: rgba(126, 34, 206, 0.65);
-  box-shadow: 0 0 2.5rem rgba(168, 85, 247, 0.6);
 }
 
 .target-btn:active {
