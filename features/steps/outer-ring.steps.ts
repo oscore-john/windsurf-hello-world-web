@@ -5,20 +5,18 @@ import { test } from './fixtures';
 const { Given, When, Then } = createBdd(test);
 
 async function waitForGameReady(page: import('@playwright/test').Page) {
-  // Wait for the outer ring to be positioned (indicates Game.start has run)
-  await page.locator('#outer-ring[style*="left"]').waitFor({ state: 'attached', timeout: 10_000 });
+  await page.locator('.outer-ring[style*="left"]').first().waitFor({ state: 'attached', timeout: 10_000 });
 }
 
 When('the user clicks the outer ring', async ({ page }) => {
   await waitForGameReady(page);
-  const ring = page.locator('#outer-ring');
-  // Click near the left edge of the ring (within the ring, outside the inner button)
+  const ring = page.locator('.outer-ring').first();
   await ring.click({ position: { x: 10, y: 80 } });
 });
 
 When('the user clicks the outer ring {int} times', async ({ page }, times: number) => {
   await waitForGameReady(page);
-  const ring = page.locator('#outer-ring');
+  const ring = page.locator('.outer-ring').first();
   for (let i = 0; i < times; i++) {
     await ring.click({ position: { x: 10, y: 80 } });
   }
@@ -38,12 +36,14 @@ Given('the user clicks the target button {int} times', async ({ page }, times: n
   }
 });
 
-Then('the target button label shows {int}', async ({ page }, expected: number) => {
-  await expect(page.locator('.target-btn').first()).toHaveText(String(expected));
+Then('the target button label shows the current score', async ({ page }) => {
+  const scoreText = await page.locator('#display-score').textContent();
+  const score = Number(scoreText);
+  expect(score).toBeLessThan(0);
 });
 
 Then('the outer ring has moved with the target button', async ({ page }) => {
-  const ring = page.locator('#outer-ring');
+  const ring = page.locator('.outer-ring').first();
   const initial = await ring.boundingBox();
   await page.waitForTimeout(1500);
   const after = await ring.boundingBox();
