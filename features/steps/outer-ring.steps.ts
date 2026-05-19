@@ -39,22 +39,6 @@ Then('the target button label shows {int}', async ({ page }, expected: number) =
   await expect(page.locator('.target-btn').first()).toHaveText(String(expected));
 });
 
-When('the user clicks the target button', async ({ page }) => {
-  await page.locator('.target-btn').first().click();
-});
-
-Given('the user clicks the target button {int} times', async ({ page }, times: number) => {
-  for (let i = 0; i < times; i++) {
-    await page.locator('.target-btn').first().click();
-  }
-});
-
-Then('the target button label shows the current score', async ({ page }) => {
-  const scoreText = await page.locator('#display-score').textContent();
-  const score = Number(scoreText);
-  expect(score).toBeLessThan(0);
-});
-
 Then('the outer ring has moved with the target button', async ({ page }) => {
   const ring = page.locator('.outer-ring').first();
   const initial = await ring.boundingBox();
