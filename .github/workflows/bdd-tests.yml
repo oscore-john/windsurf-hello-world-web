@@ -22,10 +22,12 @@ concurrency:
 
 jobs:
   bdd-tests:
-    # Run on successful preview deployments, pushes to main, or manual trigger
+    # Run on successful Vercel deployments, pushes to main, or manual trigger
+    # Excludes GitHub Pages deployment_status events (which carry a non-app URL)
     if: >-
       (github.event_name == 'deployment_status' &&
-       github.event.deployment_status.state == 'success') ||
+       github.event.deployment_status.state == 'success' &&
+       github.event.deployment_status.environment != 'github-pages') ||
       github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
