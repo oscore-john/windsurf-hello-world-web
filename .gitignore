@@ -7,3 +7,9 @@ build/
 # Supabase
 .branches
 .temp
+
+# Playwright / BDD
+test-results/
+cucumber-report/
+.features-gen/
+playwright-report/

@@ -1,0 +1,15 @@
+{
+  "name": "windsurf-hello-world-web",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Click-the-button game with Supabase auth — includes BDD living documentation",
+  "scripts": {
+    "test": "npx bddgen && npx playwright test",
+    "test:headed": "npx bddgen && npx playwright test --headed",
+    "report": "npx playwright show-report cucumber-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "playwright-bdd": "^8.5.0"
+  }
+}
