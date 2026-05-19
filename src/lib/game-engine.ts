@@ -2,6 +2,12 @@ const BUTTON_COUNT = 3;
 const MOVE_DELAY_MS = 1000;
 const TOTAL_SIZE = 160;
 
+const SIZE_TIERS = [
+  { size: 80, points: 1, fontSize: '1.5rem' },
+  { size: 52, points: 2, fontSize: '1rem' },
+  { size: 32, points: 5, fontSize: '0.75rem' },
+];
+
 const COLORS = [
   { r: 8, g: 145, b: 178 },
   { r: 126, g: 34, b: 206 },
@@ -13,13 +19,25 @@ const COLORS = [
 ];
 
 type Position = { x: number; y: number };
+type SizeTier = { size: number; points: number; fontSize: string };
 
 let score = 0;
 let area: HTMLElement | null = null;
 let buttons: HTMLButtonElement[] = [];
 let rings: HTMLDivElement[] = [];
+let buttonTiers: SizeTier[] = [];
 let moveIntervals: ReturnType<typeof setInterval>[] = [];
 let onScoreChange: ((score: number) => void) | null = null;
+
+function selectRandomTier(): SizeTier {
+  return SIZE_TIERS[Math.floor(Math.random() * SIZE_TIERS.length)];
+}
+
+function applySize(btn: HTMLButtonElement, tier: SizeTier): void {
+  btn.style.width = tier.size + 'px';
+  btn.style.height = tier.size + 'px';
+  btn.style.fontSize = tier.fontSize;
+}
 
 function getRandomPosition(existingPositions: Position[]): Position {
   const maxX = (area?.clientWidth ?? 0) - TOTAL_SIZE;
@@ -76,17 +94,15 @@ function getCurrentPositions(excludeIndex: number): Position[] {
 function moveButton(index: number): void {
   const ring = rings[index];
   const btn = buttons[index];
+  const tier = selectRandomTier();
+  buttonTiers[index] = tier;
+  applySize(btn, tier);
   const existing = getCurrentPositions(index);
   const pos = getRandomPosition(existing);
   ring.style.left = pos.x + 'px';
   ring.style.top = pos.y + 'px';
+  btn.textContent = '+' + tier.points;
   applyRandomColour(btn, ring);
-}
-
-function updateButtonLabels(): void {
-  for (let i = 0; i < buttons.length; i++) {
-    buttons[i].textContent = String(score);
-  }
 }
 
 function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
@@ -95,13 +111,12 @@ function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
 
   const btn = document.createElement('button');
   btn.className = 'target-btn';
-  btn.textContent = String(score);
 
   btn.addEventListener('click', function (e) {
     e.stopPropagation();
-    score++;
-    updateButtonLabels();
-    moveButton(buttons.indexOf(btn));
+    const idx = buttons.indexOf(btn);
+    score += buttonTiers[idx].points;
+    moveButton(idx);
     if (onScoreChange) {
       onScoreChange(score);
     }
@@ -109,7 +124,6 @@ function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
 
   ring.addEventListener('click', function () {
     score--;
-    updateButtonLabels();
     moveButton(rings.indexOf(ring));
     if (onScoreChange) {
       onScoreChange(score);
@@ -129,6 +143,7 @@ function removeAllButtons(): void {
   }
   buttons = [];
   rings = [];
+  buttonTiers = [];
 }
 
 function clearAllIntervals(): void {
@@ -151,6 +166,7 @@ export const Game = {
       const pair = createButton();
       buttons.push(pair.btn);
       rings.push(pair.ring);
+      buttonTiers.push(SIZE_TIERS[0]);
     }
 
     for (let j = 0; j < buttons.length; j++) {

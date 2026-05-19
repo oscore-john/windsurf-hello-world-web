@@ -35,10 +35,6 @@ When('the user clicks the outer ring {int} times', async ({ page }, times: numbe
   }
 });
 
-Then('the target button label shows {int}', async ({ page }, expected: number) => {
-  await expect(page.locator('.target-btn').first()).toHaveText(String(expected));
-});
-
 Then('the outer ring has moved with the target button', async ({ page }) => {
   const ring = page.locator('.outer-ring').first();
   const initial = await ring.boundingBox();
