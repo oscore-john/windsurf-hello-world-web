@@ -8,6 +8,8 @@ const SIZE_TIERS = [
   { size: 32, points: 5, fontSize: '0.75rem' },
 ];
 
+const ROTATIONS = [0, 90, 180, 270];
+
 const COLORS = [
   { r: 8, g: 145, b: 178 },
   { r: 126, g: 34, b: 206 },
@@ -26,6 +28,7 @@ let area: HTMLElement | null = null;
 let buttons: HTMLButtonElement[] = [];
 let rings: HTMLDivElement[] = [];
 let buttonTiers: SizeTier[] = [];
+let labels: HTMLSpanElement[] = [];
 let moveIntervals: ReturnType<typeof setInterval>[] = [];
 let onScoreChange: ((score: number) => void) | null = null;
 
@@ -101,16 +104,24 @@ function moveButton(index: number): void {
   const pos = getRandomPosition(existing);
   ring.style.left = pos.x + 'px';
   ring.style.top = pos.y + 'px';
-  btn.textContent = '+' + tier.points;
+  const label = labels[index];
+  label.textContent = '+' + tier.points;
+  const rotation = ROTATIONS[Math.floor(Math.random() * ROTATIONS.length)];
+  label.style.transform = 'rotate(' + rotation + 'deg)';
   applyRandomColour(btn, ring);
 }
 
-function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
+function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement; label: HTMLSpanElement } {
   const ring = document.createElement('div');
   ring.className = 'outer-ring';
 
   const btn = document.createElement('button');
   btn.className = 'target-btn';
+
+  const label = document.createElement('span');
+  label.className = 'points-label';
+  label.style.display = 'inline-block';
+  btn.appendChild(label);
 
   btn.addEventListener('click', function (e) {
     e.stopPropagation();
@@ -132,7 +143,7 @@ function createButton(): { btn: HTMLButtonElement; ring: HTMLDivElement } {
 
   ring.appendChild(btn);
   area!.appendChild(ring);
-  return { btn, ring };
+  return { btn, ring, label };
 }
 
 function removeAllButtons(): void {
@@ -144,6 +155,7 @@ function removeAllButtons(): void {
   buttons = [];
   rings = [];
   buttonTiers = [];
+  labels = [];
 }
 
 function clearAllIntervals(): void {
@@ -166,6 +178,7 @@ export const Game = {
       const pair = createButton();
       buttons.push(pair.btn);
       rings.push(pair.ring);
+      labels.push(pair.label);
       buttonTiers.push(SIZE_TIERS[0]);
     }
 
